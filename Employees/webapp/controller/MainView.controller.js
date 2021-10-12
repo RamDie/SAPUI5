@@ -2,11 +2,12 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
+    "sap/m/MessageToast"
 ],
 	/**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, Filter, FilterOperator) {
+    function (Controller, Filter, FilterOperator, MessageToast) {
         "use strict";
 
         return Controller.extend("logaligroup.Employees.controller.MainView", {
@@ -54,6 +55,11 @@ sap.ui.define([
                 var oModel = this.getView().getModel();
                 oModel.setProperty("/EmployeeId", "");
                 oModel.setProperty("/CountryKey", "");                
+            },
+            showPostalCode: function(oEvent){
+                var objectContext = oEvent.getSource().getBindingContext().getObject();
+
+                MessageToast.show(objectContext.PostalCode);
             }
             /*
             onValidate: function () {
