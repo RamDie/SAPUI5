@@ -1,22 +1,5 @@
-{
-    "EmployeeId": "1234",
-    "CountryKey": "UK",
-    "ListCountry": [
-        {
-            "Key": "USA",
-            "Text": "United States"
-        },
-        {
-            "Key": "UK",
-            "Text": "United Kindom"
-        },
-        {
-            "Key": "Spain",
-            "Text": "Spain"
-        }
-    ],
-    "Employees": [
-        {
+[ 
+      {
             "EmployeeID": "1",
             "LastName": "García Lopez",
             "FirstName": "María",
@@ -117,4 +100,3 @@
             ]
         }
     ]
-}
