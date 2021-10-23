@@ -58,33 +58,20 @@ sap.ui.define([
                 MessageToast.show(objectContext.PostalCode);
             },
             showOrders: function(oEvent){
-                var ordersTable = this.getView().byId("ordersTable");
-                ordersTable.destroyItems();
-                var itemPressed = oEvent.getSource();
-                var oContext = itemPressed.getBindingContext("jsonEmployees");
-                var objectContext = oContext.getObject();
-                var orders = objectContext.Orders;
-                var ordersItems = [];
-                
-                for (var i in orders) {
-                    ordersItems.push(new sap.m.ColumnListItem({
-                            cells: [
-                                new sap.m.Label({ text: orders[i].OrderID }),
-                                new sap.m.Label({ text: orders[i].Freight }),
-                                new sap.m.Label({ text: orders[i].ShipAddress })
-                            ]  
-                    }));
+                //Get selected controller
+                var iconPressed = oEvent.getSource();
+                //Context from the model
+                var oContext = iconPressed.getBindingContext("jsonEmployees");
+                if (!this.oDialogOrders) {
+                    this.oDialogOrders = sap.ui.xmlfragment("logaligroup.Employees.fragment.DialogOrders", this);
+                    this.getView().addDependent(this.oDialogOrders);
                 }
-                var newTable = new sap.m.Table({ 
-                    width: "auto",
-                    columns: [
-                                new sap.m.Column({ header: new sap.m.Label({ text: "{i18n>orderID}" }) }),
-                                new sap.m.Column({ header: new sap.m.Label({ text: "{i18n>freight}" }) }),
-                                new sap.m.Column({ header: new sap.m.Label({ text: "{i18n>shipAddress}" }) })
-                            ],
-                    items: ordersItems
-                    }).addStyleClass("sapUiSmallMargin");
-                ordersTable.addItem(newTable); 
+                //Dialog binding to the Context to have access to the data of selected item
+                this.oDialogOrders.bindElement("jsonEmployees>" + oContext.getPath());
+                this.oDialogOrders.open();
+            },
+            onCloseOrders: function(){
+                this.oDialogOrders.close();
             },
             onShowCity: function() {
                 var oJsonModelConfig = this.getView().getModel("jsonModelConfig");
