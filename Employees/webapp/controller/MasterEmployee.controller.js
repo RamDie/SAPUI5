@@ -10,28 +10,9 @@ sap.ui.define([
     function (Controller, Filter, FilterOperator, MessageToast) {
         "use strict";
 
-        return Controller.extend("logaligroup.Employees.controller.MainView", {
+        return Controller.extend("logaligroup.Employees.controller.MasterEmployee", {
             onInit: function () {                
-                var oView = this.getView();
-                var i18nBundle = oView.getModel("i18n").getResourceBundle();
-
-                var oJSONModelEmpl = new sap.ui.model.json.JSONModel();
-                oJSONModelEmpl.loadData("./localService/mockData/Employees.json", false);
-                oView.setModel(oJSONModelEmpl, "jsonEmployees");
-
-                var oJSONModelCountries = new sap.ui.model.json.JSONModel();
-                oJSONModelCountries.loadData("./localService/mockData/Countries.json", false);
-                oView.setModel(oJSONModelCountries, "jsonCountries");
-
-                var oJsonModelConfig = new sap.ui.model.json.JSONModel({
-                    visibleID: true,
-                    visibleName: true,
-                    visibleCountry: true,
-                    visibleCity: false,
-                    visibleBtnShowCity: true,
-                    visibleBtnHideCity: false
-                });
-                oView.setModel(oJsonModelConfig, "jsonModelConfig");                                
+                this._bus = sap.ui.getCore().getEventBus();
             },
             onFilter: function(){
                 var oJSONCountries = this.getView().getModel("jsonCountries").getData();
@@ -84,7 +65,11 @@ sap.ui.define([
                 oJsonModelConfig.setProperty("/visibleCity", false);
                 oJsonModelConfig.setProperty("/visibleBtnShowCity", true);
                 oJsonModelConfig.setProperty("/visibleBtnHideCity", false);
-            }            
+            },
+            showEmployee: function(oEvent) {
+                var path = oEvent.getSource().getBindingContext("jsonEmployees").getPath();
+                this._bus.publish("flexible", "showEmployee", path);                
+            }        
             /*
             onValidate: function () {
                 var inputEmployee = this.byId("inputEmployee");
